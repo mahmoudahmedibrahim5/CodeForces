@@ -9,7 +9,7 @@ int main()
     cin >> t;
 
     int n, k;
-    int product;
+    long long product;
     while (t--)
     {
         product = 1;
@@ -21,7 +21,7 @@ int main()
             product *= arr[i];
         }
         
-        if(2023%product == 0){
+        if(2023%product == 0 && product <= 2023){
             cout << "YES" << endl;
             cout << 2023/product;
             for(int i = 1; i < k; i++)
