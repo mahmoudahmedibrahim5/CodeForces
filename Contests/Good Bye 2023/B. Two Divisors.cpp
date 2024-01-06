@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <numeric>
 
 using namespace std;
 
@@ -9,17 +10,17 @@ int main()
     cin >> t;
 
     long long x, y;
-    long long result;
     while (t--)
     {
         cin >> x >> y;
-        for(long long i = 2; i <= 1000000000; i++)
+        if(y%x == 0)
         {
-            result = i * y;
-            if((result%x==0) && (result%y==0)){
-                cout << result << endl;
-                break;
-            }
+            cout << y*y/x << endl;
+        }
+        else
+        {
+            int g = gcd(x, y);
+            cout << x * y / gcd << endl;
         }  
     }
     
