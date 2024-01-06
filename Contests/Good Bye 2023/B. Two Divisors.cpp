@@ -20,7 +20,7 @@ int main()
         else
         {
             int g = gcd(x, y);
-            cout << x * y / gcd << endl;
+            cout << x * y / g << endl;
         }  
     }
     
