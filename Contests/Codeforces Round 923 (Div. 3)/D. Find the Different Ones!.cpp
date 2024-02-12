@@ -12,29 +12,33 @@ int main()
  
     int n, q;
     int l, r;
+    int element, lastElement;
     while(t--)
     {
         cin >> n;
         vector<int> arr(n);
-        for(int i = 0; i < n; i++){
-            cin >> arr[i];
+        arr[0] = -1;
+        cin >> lastElement;
+        for(int i = 1; i < n; i++){
+            cin >> element;
+            if(element == lastElement)
+                arr[i] = arr[i - 1];
+            else
+                arr[i] = i;
+            lastElement = element;
         }
+
         cin >> q;
  
         for(int i = 0; i < q; i++){
             cin >> l >> r;
-            int x = arr[l - 1];
-            int y = -2;
-            for(int j = l; j < r; j++){
-                if(x != arr[j]){
-                    y = j;
-                    break;
-                }
+            l--;
+            r--;
+            if(arr[l] == arr[r])
+                cout << "-1 -1" << endl;
+            else{
+                cout << arr[r] << " " << r + 1 << endl;
             }
-            x = l - 1;
-            if(y == -2)
-                x = -2;
-            cout << x + 1 << " " << y + 1 << endl;
         }
         cout << endl;
     }
