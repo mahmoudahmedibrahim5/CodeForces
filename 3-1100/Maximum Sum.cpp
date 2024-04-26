@@ -6,19 +6,6 @@
 #define NUM 1000000007
 using namespace std;
 
-long long mod_pow(long long base, long long exponent, long long mod) {
-    long long result = 1;
-    base %= mod;
-    while (exponent > 0) {
-        if (exponent & 1) {
-            result = (result * base) % mod;
-        }
-        base = (base * base) % mod;
-        exponent >>= 1;
-    }
-    return result;
-}
-
 int main()
 {
     int t;
@@ -59,8 +46,6 @@ int main()
             p = (p * 2) % NUM;
         }
         result = (sum + maxSubArray * (p - 1) + NUM) % NUM;
-
-        //cout << "Sum = " << sum << ", maxSubArray = " << maxSubArray << ", Result = " << result << endl;
         cout << result << endl;
     }
     
