@@ -5,68 +5,43 @@
 
 using namespace std;
 
+#define TABLE_SIZE  1000
+
+unsigned int hashFunc(int size, int color)
+{
+    return (size * 1000 + color);
+}
+
 int main()
 {
     int n, m;
     cin >> n >> m;
     
-    vector<pair<int, int>> markers;
-    vector<pair<int, int>> caps;
+    unsigned int maxTable[1000] = {0};
+    unsigned int* hashTable = (unsigned int*)calloc(1001000, sizeof(unsigned int));
+    unsigned int x, y;
     
-    pair <int, int> e;
+    unsigned int hashValue;
+    int max = 0, beautiful = 0;
+    /* Markers Input */
     for(int i = 0; i < n; i++){
-        cin >> e.second >> e.first;
-        markers.push_back(e);
+        cin >> x >> y;
+        maxTable[y]++;
+        hashValue = hashFunc(y, x);
+        hashTable[hashValue]++;
     }
     for(int i = 0; i < m; i++){
-        cin >> e.second >> e.first;
-        caps.push_back(e);
-    }
-
-    sort(markers.begin(), markers.end());
-    sort(caps.begin(), caps.end());
-
-    int max = 0, beautiful = 0;
-
-    int caps_index = 0, markers_index = 0;
-    while(caps_index < m && markers_index < n)
-    {
-        if(markers[markers_index].first == caps[caps_index].first){
+        cin >> x >> y;
+        if(maxTable[y] > 0){
             max++;
-            caps_index++;
-            markers_index++;
+            maxTable[y]--;
         }
-        else if(markers[markers_index].first > caps[caps_index].first){
-            caps_index++;
-        }
-        else if(markers[markers_index].first < caps[caps_index].first){
-            markers_index++;
+        hashValue = hashFunc(y, x);
+        if(hashTable[hashValue] > 0){
+            hashTable[hashValue]--;
+            beautiful++;
         }
     }
-
-    int start = 0;
-    bool first;
-    for(int i = 0; i < n; i++)
-    {
-        first = true;
-        for(int j = start; j < m; j++)
-        {
-            if(markers[i].first == caps[j].first)
-            {
-                if(first){
-                    start = j;
-                    first = false;
-                }
-                if(markers[i].second == caps[j].second){
-                    beautiful++;
-                    caps.erase(caps.begin() + j);
-                    m--;
-                    break;
-                }
-            }
-            else if(markers[i].first < caps[j].first)
-                break;
-        }
-    }
+    
     cout << max << " " << beautiful << endl;
 }
