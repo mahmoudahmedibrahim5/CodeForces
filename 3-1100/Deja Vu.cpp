@@ -26,8 +26,13 @@ int main()
         for(int i = 0; i < q; i++)
             cin >> x[i];
         
+        int min = 31;
         for(int i = 0; i < q; i++)
         {
+            if(x[i] >= min)
+                continue;
+            else
+                min = x[i];
             for(int j = 0; j < n; j++)
             {
                 if(arr[j] % twos[x[i]] == 0){
