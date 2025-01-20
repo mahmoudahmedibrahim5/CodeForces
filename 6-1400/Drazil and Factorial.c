@@ -5,16 +5,12 @@
 typedef unsigned int uint32_t;
 typedef unsigned long long uint64_t;
 
-const int factorial[10] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880};
-
-/* Find F(x)
- * for positive integer x, it's the product of factorials of its digits. 
- * For example F(135) = 1! * 3! * 5!
-*/
-uint64_t F(uint64_t x, uint32_t n);
-
+const uint64_t power10[] = {1, 10, 100, 1000, 10000,
+                            1e5, 1e6, 1e7, 1e8, 1e9,
+                            1e10, 1e11, 1e12, 1e13, 1e14, 1e15
+                            };
 /* Factorize Fa */
-void Factorize(uint64_t Fa, uint32_t* twos, uint32_t* threes, uint32_t* fives, uint32_t* sevens);
+void Factorize(uint64_t a, uint32_t n, uint32_t* twos, uint32_t* threes, uint32_t* fives, uint32_t* sevens);
 
 /* Find maximum x that satisfies the two conditions 
  * x doesn't contain neither digit 0 nor digit 1
@@ -30,12 +26,9 @@ int main()
     scanf("%d", &n);
     scanf("%lld", &a);
 
-    /* Calculate F(a) */
-    uint64_t Fa = F(a, n);
-
-    /* Factorize F(a) */
+    /* Factorize */
     uint32_t twos = 0, threes = 0, fives = 0, sevens = 0;
-    Factorize(Fa, &twos, &threes, &fives, &sevens);
+    Factorize(a, n, &twos, &threes, &fives, &sevens);
 
     /* Find maximum x that satisfies the two conditions */
     FindMaximumX(twos, threes, fives, sevens);
@@ -43,56 +36,72 @@ int main()
     return 0;
 }
 
-uint64_t F(uint64_t x, uint32_t n)
+void Factorize(uint64_t a, uint32_t n, uint32_t* twos, uint32_t* threes, uint32_t* fives, uint32_t* sevens)
 {
-    uint64_t Fx = 1; 
-    for(int i = 0; i < n; i++){
-        uint32_t digit = x / (uint64_t)pow(10, (double)i);
+    for(int i = 0; i < n; i++)
+    {
+        uint64_t digit = a / power10[i];
+        #if DEBUG
+            printf("digit before modulo = %u\n", digit);
+        #endif
         if(digit == 0)
             break;
-        Fx *= factorial[(digit % 10)]; 
-    }
-    #if DEBUG
-        printf("Fa = %lld\n", Fx);
-    #endif
-    return Fx;
-}
-
-void Factorize(uint64_t Fa, uint32_t* twos, uint32_t* threes, uint32_t* fives, uint32_t* sevens)
-{
-    while (Fa > 1)
-    {
+        digit %= 10;
         #if DEBUG
-            printf("Fa = %lld, twos = %u, threes = %u, fives = %u, sevens = %u\n", Fa, *twos, *threes, *fives, *sevens);
+            printf("digit = %u\n", digit);
         #endif
-        if(Fa % 2 == 0){
-            Fa /= 2;
-            (*twos)++;
-        }
-        else if(Fa % 3 == 0){
-            Fa /= 3;
-            (*threes)++;
-        }
-        else if(Fa % 5 == 0){
-            Fa /= 5;
-            (*fives)++;
-        }
-        else if(Fa % 7 == 0){
-            Fa /= 7;
-            (*sevens)++;
-        }
-        else{
-            printf("error\n");
-            break;
+        switch (digit)
+        {
+            case 2:
+                (*twos)++;
+                break;
+            case 3:
+                (*twos)++;
+                (*threes)++;
+                break;
+            case 4:
+                (*twos) += 3;
+                (*threes)++;
+                break;
+            case 5:
+                (*twos) += 3;
+                (*threes)++;
+                (*fives)++;
+                break;
+            case 6:
+                (*twos) += 4;
+                (*threes) +=2;
+                (*fives)++;
+                break;
+            case 7:
+                (*twos) += 4;
+                (*threes) +=2;
+                (*fives)++;
+                (*sevens)++;
+                break;
+            case 8:
+                (*twos) += 7;
+                (*threes) +=2;
+                (*fives)++;
+                (*sevens)++;
+                break;
+            case 9:
+                (*twos) += 7;
+                (*threes) += 4;
+                (*fives)++;
+                (*sevens)++;
+                break;
+            default:
+                break;
         }
     }
-    #if DEBUG
-        printf("twos = %u, threes = %u, fives = %u, sevens = %u\n", *twos, *threes, *fives, *sevens);
-    #endif
 }
 
 void FindMaximumX(uint32_t twos, uint32_t threes, uint32_t fives, uint32_t sevens)
 {
+    #if DEBUG
+        printf("\ntwos = %u, threes = %u, fives = %u, sevens = %u\n", twos, threes, fives, sevens);
+    #endif
     if(sevens != 0)
     {
         fives -= sevens;
