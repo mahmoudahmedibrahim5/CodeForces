@@ -82,7 +82,7 @@ int main()
      * Count positive, negative and zeros in arr
     **/
     int b;
-    int zeros = 0, negative = 0;
+    long long zeros = 0, negative = 0;
     for(int i = 0; i < n; i++){
         scanf("%d", &b);
         arr[i] -= b;
@@ -91,17 +91,17 @@ int main()
         else if(arr[i] == 0)
             zeros++;
     }
-    int positive = n - zeros - negative;
+    long long positive = n - zeros - negative;
 
     /* Sort arr */
     sortArray(arr, 0, n - 1);
     
     /* Count the good pairs from the positive and zeros categories */
-    int result = (zeros * positive) + ((positive * (positive - 1)) / 2);
+    long long result = (long long)(zeros * positive) + (long long)((positive * (positive - 1)) / 2);
     
     /* Count the good pairs in the negative category */
-    int index1 = 0;
-    int index2 = n - 1;
+    long long index1 = 0;
+    long long index2 = n - 1;
     
     int count = 0;
     while (index1 != negative && index2 != negative + zeros - 1)
@@ -110,38 +110,14 @@ int main()
             index1++;
         }
         else if((-1 * arr[index1]) < (arr[index2]) && (-1 * arr[index1]) >= (arr[index2 - 1])){
-            result += (n - index2);
+            result += ((long long)n - index2);
             index1++;
         }
         else
             index2--;
     }
     
-    // for(int i = 0; i < negative; i++)
-    // {
-    //     int elem = arr[i] * -1;
-
-    //     if(elem >= arr[n - 1])
-    //         continue;
-
-    //     /* Binary search starting from index */
-    //     int start = negative + zeros, end = n - 1;
-    //     for(int j = start; j < n; i++)
-    //     {
-    //         int mid = (start + end) / 2;
-    //         if(arr[mid] > elem && arr[mid - 1] <= elem)
-    //         {
-    //             result += (n - mid);
-    //             break;
-    //         }
-    //         else if(arr[mid] > elem)
-    //             end = mid;
-    //         else if(arr[mid] <= elem)
-    //             start = mid;
-    //     }
-    // }
-
-    printf("%d\n", result);
+    printf("%lld\n", result);
 
     free(arr);
     return 0;
