@@ -6,7 +6,7 @@
 using namespace std;
 
 typedef unsigned long long uint64_t;
-typedef long long int64_t;
+//typedef long long int64_t;
 
 void printZeros(int x)
 {
@@ -46,129 +46,31 @@ int main()
         if(
             ((x == 0 || y == 0) && (x + y > k))
         ||  ((k == 1) && (y - x > 1))
-        ||  (x != 0) && (k != 1) && (y / x >= k)
+        ||  (x != 0) && (k != 1) && (y - x > k)
+        ||  (k > y)
         )
         {
             cout << "-1" << endl;
             continue;
         }
 
-        /* Possible Cases */
-        if(k == 1)
+        if(highest)
         {
-            if(highest)
-            {
-                cout << "1";
-                for(int i = 0; i < x; i++)
-                    cout << "01";
-            }
-            else
-            {
-                cout << "0";
-                for(int i = 0; i < x; i++)
-                    cout << "10";
-            }
-        } 
-        else if(x == 0 || y == 0)
-        {
-            if(highest)
-                printOnes(m);
-            else
-                printZeros(n);
+            printOnes(k);
+            y -= k;
+            for(int i = 0; i < y; i++)
+                cout << "01";
+            printZeros(x - y);
         }
         else
         {
-            /* Print the maximum balance value */
-            if(highest)
-                printOnes(k);
-            else
-                printZeros(k);
-
+            printZeros(k);
             y -= k;
-            if(y == 0)
-            {
-                if(!highest)
-                    printOnes(m);
-                else
-                    printZeros(n);
-            }
-            else
-            {
-                /* Update the highest */
-                bool oldHeigest = highest;
-                if(y < x)
-                {
-                    /* Swap */
-                    y += x;
-                    x = y - x;
-                    y -= x; 
-                    highest = !highest;
-                }
-
-                int ratio = y / x;
-                if(highest)
-                {
-                    while (y % x != 0)
-                    {
-                        if(oldHeigest){
-                            printZeros(1);
-                            printOnes(ratio + 1);
-                        }
-                        else
-                        {
-                            printOnes(ratio + 1);
-                            printZeros(1);
-                        }
-                        x--;
-                        y -= (ratio + 1);
-                    }
-
-                    for(int i = 0; i < x; i++){
-                        if(oldHeigest){
-                            printZeros(1);
-                            printOnes(ratio);
-                        }
-                        else
-                        {
-                            printOnes(ratio);
-                            printZeros(1);
-                        }
-                        
-                    }
-                }   
-                else
-                {
-                    while (y % x != 0)
-                    {
-                        if(oldHeigest){
-                            printZeros(ratio + 1);
-                            printOnes(1);
-                        }
-                        else
-                        {
-                            printOnes(1);
-                            printZeros(ratio + 1);
-                        }
-                        x--;
-                        y -= (ratio + 1);
-                    }
-
-                    for(int i = 0; i < x; i++){
-                        if(oldHeigest){
-                            printZeros(ratio);
-                            printOnes(1);
-                        }
-                        else
-                        {
-                            printOnes(1);
-                            printZeros(ratio);
-                        }
-                    }
-                }
-            }
-            }
-
-            
+            for(int i = 0; i < y; i++)
+                cout << "10";
+            printOnes(x - y);
+        }
+        
         cout << endl;
     }
     
