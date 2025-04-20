@@ -4,36 +4,31 @@
 
 using namespace std;
 
+bool isPrime(int n)
+{
+    if (n <= 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
+
+    for (int i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0)
+            return false;
+    }
+    return true;
+}
+
 bool FastestFingerWin(int n)
 {
     if(n == 1)
         return true;
-    if(n == 2)
+    if(n == 2 || n % 2 != 0)
         return false;
-    if(n%2 != 0)
-        return false;
-
-    bool found = false;
-    bool prime = true;
-    int pr = n/2;
-    int sq = sqrt(pr);
-
-    for(int j = 3; j <= n/3; j+=2){
-        if((!found) && ((n%j)==0)){
-            found = true;
-            if(n%4 == 0)
-                return false;
-        }
-        if((prime) && (j<=sq) && (pr%j==0)){
-            prime = false;
-            break;
-        }
-    }
     
-    if(found && (!prime))
-        return false;
-    else
+    if((n / 2) % 2 != 0)
+        return isPrime(n / 2);
+    else if(log2((double)n) == (double)(int)log2((double)n))
         return true;
+    else
+        return false;
 }
 
 int main()
