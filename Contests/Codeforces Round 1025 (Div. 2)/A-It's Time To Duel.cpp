@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdint>
+#include <cmath>
+
+using namespace std;
+
+#define USE_GRAPH       false
+#define USE_ORDERED_SET false
+
+#if GRAPH
+    struct node{
+        int element;
+        bool visited = false;
+        vector<node*> children;
+    };
+
+    class Graph
+    {
+    public:
+        vector<node> elements;
+        Graph(int n) : elements(n) {}
+
+        void connect(node* n1, node* n2)
+        {
+            n1->children.push_back(n2);
+            n2->children.push_back(n1);
+        }
+
+        void DFS()
+        {
+
+        }
+    };
+#endif
+
+#if ORDERED_SET
+    #include <ext/pb_ds/assoc_container.hpp>
+    #include <ext/pb_ds/tree_policy.hpp>
+
+    typedef __gnu_pbds::tree<int, __gnu_pbds::null_type, greater<int>, __gnu_pbds::rb_tree_tag,
+     __gnu_pbds::tree_order_statistics_node_update> ordered_set;
+#endif
+
+void solve()
+{
+    int n;
+    cin >> n;
+
+    vector<int> arr(n);
+    bool allOnes = true;
+    for(int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+        if(arr[i] == 0)
+            allOnes = false;
+    }
+    if(allOnes){
+        cout << "YES" << endl;
+        return;
+    }
+
+    for(int i = 1; i < n; i++){
+        if(arr[i] == 0 && arr[i] == arr[i - 1]){
+            cout << "YES" << endl;
+            return;
+        }
+    }
+    cout << "NO" << endl;
+}
+
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--)
+        solve();
+}
